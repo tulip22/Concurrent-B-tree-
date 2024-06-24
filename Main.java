@@ -8,22 +8,26 @@ import java.util.concurrent.TimeUnit;
 public class Main {
 
     public static void main(String[] args) {
-        btree tree = new btree(3);
+        BPlusTree tree = new BPlusTree(3);
 
+
+        for(int i = 0; i < 100; i++){
+            tree.insert(new StudentRecord(i,"AA"));
+        }
         // Declaring the ArrayList
-        List<studentRecord> arr = Collections.synchronizedList(new ArrayList<>(Collections.nCopies(100, null)));
+        List<StudentRecord> arr = Collections.synchronizedList(new ArrayList<>(Collections.nCopies(100, null)));
         long begin = System.currentTimeMillis();
 
         // retrieval
         // creating executor service with cached thread pool
         ExecutorService serv = Executors.newCachedThreadPool();
-        for(int i = 0; i < 100; i++){
+        for(int i = 0; i < 200; i++){
             
             int num = i;
             serv.submit(() -> {
                 //writing a function to fetch n store , then print in sorted order
                 //create arrayList and pass it in fetch , after all threads are done, 
-                studentRecord s = tree.retrieve(num);
+                StudentRecord s = tree.retrieve(num);
                 synchronized(arr){
                     if(s!=null){
                         //System.out.println(s.rollNo);
